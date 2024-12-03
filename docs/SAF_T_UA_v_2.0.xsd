@@ -1,0 +1,3568 @@
+<?xml version="1.0"?>
+
+<xs:schema 
+	id="SAF-T_UA"
+	version="2.00" 
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"> 
+	
+    <xs:element name="AuditFile">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Header">
+					<xs:annotation>
+						<xs:documentation>I. Заголовок</xs:documentation>
+					</xs:annotation>		
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="HeaderStructure">
+								<xs:sequence>
+									<xs:element name="FundInfo" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Інформація про фонд</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="FundType" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Тип фонду</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="SAFcodeType">
+															<xs:enumeration value="ПІФ"/>
+															<xs:enumeration value="КІФ"/>
+															<xs:enumeration value="НПФ"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+												<xs:element name="IJINumber" type="SAFshorttextType" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>ЄДРІСІ</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="AMCRegistrationNumber" type="SAFshorttextType" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>ЄДРПОУ КУА/Адміністратора НПФ</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>	
+									</xs:element>																			
+									<xs:element name="BranchInfo" minOccurs="0" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Інформація про філію</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="BranchNumber" type="SAFlongtextType">
+													<xs:annotation>
+														<xs:documentation>Номер філії</xs:documentation>
+													</xs:annotation>													
+												</xs:element>
+												<xs:element name="BranchName" type="SAFlongtextType">
+													<xs:annotation>
+														<xs:documentation>Назва філії</xs:documentation>
+													</xs:annotation>													
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>	
+									</xs:element>																		
+									<xs:element name="TaxAccountingBasis" type="SAFshorttextType" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Метод податкового обліку</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="TaxEntity" type="SAFmiddle2textType" minOccurs="0" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Відокремлений підрозділ</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="NumberOfParts" type="xs:positiveInteger" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Кількість частин файлу</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="PartNumber" type="xs:positiveInteger" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Порядковий номер частини файлу</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>	
+                <xs:element name="MasterFiles" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>II. Довідники</xs:documentation>
+					</xs:annotation>		
+					<xs:complexType> 
+						<xs:sequence>
+							<xs:element name="AccountingPolicies" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Облікова політика</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="AccountingPolicy" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Облікова політика</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>  
+												<xs:sequence>
+													<xs:element name="NameOfAccountingPolicy" type="SAFstringType">
+														<xs:annotation>
+															<xs:documentation>Назва елемента облікової політики</xs:documentation>
+														</xs:annotation>		
+													</xs:element>
+													<xs:element name="DescriptionOfAccountingPolicy" type="SAFstringType">
+														<xs:annotation>
+															<xs:documentation>Опис елемента облікової політики</xs:documentation>
+														</xs:annotation>	
+													</xs:element>
+													<xs:element name="AccountingPolicyDocument" type="SAFstringType">
+														<xs:annotation>
+															<xs:documentation>Реквізити документа(ів) про облікову політику</xs:documentation>
+														</xs:annotation>		
+													</xs:element>
+													<xs:element name="AccountingStandart" type="SAFstringType">
+														<xs:annotation>
+															<xs:documentation>Найменування ПСБО/МСБО, МСФЗ</xs:documentation>
+														</xs:annotation>	
+													</xs:element>
+												</xs:sequence>	
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>	
+								</xs:complexType>									
+							</xs:element>
+							<xs:element name="TransactionFeatures" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Довідники операцій</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TransactionFeature" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Опис типу операції</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>  
+												<xs:sequence>
+													<xs:element ref="TransactionType">
+														<xs:annotation>
+															<xs:documentation>Тип операції</xs:documentation>
+														</xs:annotation>														
+													</xs:element>
+													<xs:element name="TransactionTypeDescription" type="SAFlongtextType">
+														<xs:annotation>
+															<xs:documentation>Опис операції</xs:documentation>
+														</xs:annotation>															
+													</xs:element>
+												</xs:sequence>	
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>	
+								</xs:complexType>									
+							</xs:element>
+							<xs:element name="GeneralLedgerAccounts" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Сальдові/оборотні відомості</xs:documentation>
+								</xs:annotation>				
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Account" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Рахунок бухгалтерського обліку</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>  
+												<xs:sequence>
+													<xs:element ref="AccountID">
+														<xs:annotation>
+															<xs:documentation>Код рахунку</xs:documentation>
+														</xs:annotation>		
+													</xs:element>
+													<xs:element name="AccountDescription" type="SAFlongtextType">
+														<xs:annotation>
+															<xs:documentation>Назва рахунку</xs:documentation>
+														</xs:annotation>		
+													</xs:element>
+													<xs:element name="StandardAccountID" type="SAFmiddle1textType">
+														<xs:annotation>
+															<xs:documentation>Номер стандартного рахунку</xs:documentation>
+														</xs:annotation>		
+													</xs:element> 
+													<xs:element name="GroupingCategory" type="SAFmiddle1textType">
+														<xs:annotation>
+															<xs:documentation>Категорія рахунку</xs:documentation>
+														</xs:annotation>		
+													</xs:element>
+													<xs:element name="GroupingCode" type="SAFmiddle1textType">
+														<xs:annotation>
+															<xs:documentation>Код групи рахунку</xs:documentation>
+														</xs:annotation>		
+													</xs:element>
+													<xs:element name="AccountType" type="SAFshorttextType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Тип рахунку</xs:documentation>
+														</xs:annotation>												
+													</xs:element>
+													<xs:element name="AccountCreationDate" type="SAFdateType" minOccurs="0"> 
+														<xs:annotation>
+															<xs:documentation>Дата створення</xs:documentation>
+														</xs:annotation>		
+													</xs:element>
+													<xs:choice maxOccurs="2">
+														<xs:element ref="OpeningDebitBalance">
+															<xs:annotation>
+																<xs:documentation>Початкове дебетове сальдо</xs:documentation>
+															</xs:annotation>		
+														</xs:element>
+														<xs:element ref="OpeningCreditBalance">
+															<xs:annotation>
+																<xs:documentation>Початкове кредитове сальдо</xs:documentation>
+															</xs:annotation>		
+														</xs:element>
+													</xs:choice>		
+													<xs:element ref="DebitTurnover">
+														<xs:annotation>
+															<xs:documentation>Дебетовий оборот</xs:documentation>
+														</xs:annotation>		
+													</xs:element>
+													<xs:element ref="CreditTurnover">
+														<xs:annotation>
+															<xs:documentation>Кредитовий оборот</xs:documentation>
+														</xs:annotation>		
+													</xs:element>														
+													<xs:choice maxOccurs="2">
+														<xs:element ref="ClosingDebitBalance">
+															<xs:annotation>
+																<xs:documentation>Кінцеве дебетове сальдо</xs:documentation>
+															</xs:annotation>		
+														</xs:element> 
+														<xs:element ref="ClosingCreditBalance">
+															<xs:annotation>
+																<xs:documentation>Кінцеве кредитове сальдо</xs:documentation>
+															</xs:annotation>		
+														</xs:element>
+													</xs:choice>
+												</xs:sequence>	
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>	
+								</xs:complexType>
+							</xs:element>								
+							<xs:element name="Taxonomies" minOccurs="0">	
+								<xs:annotation>
+									<xs:documentation>Таксономії</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Taxonomy" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Таксономія</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>  
+												<xs:sequence>
+													<xs:element name="TaxonomyReference" type="SAFlongtextType">
+														<xs:annotation>
+															<xs:documentation>Посилання на таксономію</xs:documentation>
+														</xs:annotation>
+													</xs:element>														
+													<xs:element name="TaxonomyElement" minOccurs="0" maxOccurs="unbounded"> 
+														<xs:annotation>
+															<xs:documentation>Елемент таксономії</xs:documentation>
+														</xs:annotation>
+														<xs:complexType> 
+															<xs:sequence>																
+																<xs:element name="TaxonomyCode" type="SAFlongtextType">
+																	<xs:annotation>
+																		<xs:documentation>Код таксономії</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="TaxonomyClusterID" type="SAFlongtextType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Ідентифікатор кластера таксономії</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="TaxonomyClusterContextID" type="SAFlongtextType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Контекстний ідентифікатор кластера таксономії</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="AccountID">
+																	<xs:annotation>
+																		<xs:documentation>Код рахунку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>		
+															</xs:sequence>
+														</xs:complexType> 
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType> 
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>	
+							</xs:element>							
+							<xs:element name="Customers" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Клієнти</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Customer" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Клієнт</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:complexContent>
+													<xs:extension base="CompanyStructure">														
+														<xs:sequence>
+															<xs:element ref="CustomerID">
+																<xs:annotation>
+																	<xs:documentation>Ідентифікатор покупця</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="CustomerType" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Тип особи покупця</xs:documentation>
+																</xs:annotation>																
+															</xs:element>
+															<xs:element ref="RelatedPartyCode" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Код ознаки пов'язаності</xs:documentation>
+																</xs:annotation>
+															</xs:element>															
+															<xs:element name="CustomerBalance" type="CounterAgentBalanceStructure" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Сальдо розрахунків</xs:documentation>
+																</xs:annotation>
+															</xs:element>	
+														</xs:sequence>
+													</xs:extension>
+												</xs:complexContent>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>								
+							</xs:element>
+							<xs:element name="Suppliers" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Постачальники</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Supplier" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Постачальник</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:complexContent>
+													<xs:extension base="CompanyStructure">
+														<xs:sequence>
+															<xs:element ref="SupplierID">
+																<xs:annotation>
+																	<xs:documentation>Ідентифікатор постачальника</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="SupplierType" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Тип особи постачальника</xs:documentation>
+																</xs:annotation>																
+															</xs:element>
+															<xs:element ref="RelatedPartyCode" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Код ознаки пов'язаності</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="SupplierBalance" type="CounterAgentBalanceStructure" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Сальдо розрахунків</xs:documentation>
+																</xs:annotation>
+															</xs:element>		
+														</xs:sequence>
+													</xs:extension>
+												</xs:complexContent>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>								
+							</xs:element>	
+							<xs:element name="TaxTable" minOccurs="0">	
+								<xs:annotation>
+									<xs:documentation>Таблиця податків</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TaxTableEntry" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Опис податку</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>  
+												<xs:sequence>
+													<xs:element ref="TaxType">
+														<xs:annotation>
+															<xs:documentation>Вид податку</xs:documentation>
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="Description">
+														<xs:annotation>
+															<xs:documentation>Опис виду податку</xs:documentation>
+														</xs:annotation>														
+													</xs:element>	
+													<xs:element name="TaxCodeDetails" maxOccurs="unbounded"> 
+														<xs:annotation>
+															<xs:documentation>Дані про податок</xs:documentation>
+														</xs:annotation>		
+														<xs:complexType> 
+															<xs:sequence>
+																<xs:element ref="TaxCode">
+																	<xs:annotation>
+																		<xs:documentation>Код податку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="EffectiveDate" type="SAFdateType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Дата набрання чинності</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="ExpirationDate" type="SAFdateType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Дата закінчення</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="Description">
+																	<xs:annotation>
+																		<xs:documentation>Опис коду податку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:choice minOccurs="0">
+																	<xs:element ref="TaxPercentage">
+																		<xs:annotation>
+																			<xs:documentation>Відносна ставка податку</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>	
+																	<xs:element name="FlatTaxRate" type="AmountStructure">
+																		<xs:annotation>
+																			<xs:documentation>Абсолютна ставка податку</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>	
+																</xs:choice>		
+																<xs:element ref="Country" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Країна</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="Region" type="SAFmiddle1textType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Регіон</xs:documentation>
+																	</xs:annotation>
+																</xs:element>				
+															</xs:sequence>
+														</xs:complexType> 
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType> 
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>	
+							</xs:element>
+							<xs:element name="UOMTable" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Таблиця одиниць виміру</xs:documentation>
+								</xs:annotation>		
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="UOMTableEntry" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Дані про одиницю виміру</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>  
+												<xs:sequence>
+													<xs:element ref="UnitOfMeasure">
+														<xs:annotation>
+															<xs:documentation>Одиниця виміру</xs:documentation>
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="Description">
+														<xs:annotation>
+															<xs:documentation>Опис одиниці виміру</xs:documentation>
+														</xs:annotation>
+													</xs:element>	
+												</xs:sequence>
+											</xs:complexType> 
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>	
+							</xs:element>		
+							<xs:element name="AnalysisTypeTable" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Таблиця аналітичних рахунків</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="AnalysisTypeTableEntry" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Аналітичний рахунок</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>  
+												<xs:sequence>
+													<xs:element ref="AnalysisType">
+														<xs:annotation>
+															<xs:documentation>Код типу аналітичного рахунку (субконто)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AnalysisTypeDescription" type="SAFlongtextType">
+														<xs:annotation>
+															<xs:documentation>Назва типу аналітичного рахунку (субконто)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="AnalysisID">
+														<xs:annotation>
+															<xs:documentation>Код аналітичного рахунку (субконто)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AnalysisIDDescription" type="SAFlongtextType">
+														<xs:annotation>
+															<xs:documentation>Назва аналітичного рахунку (субконо)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType> 
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>	
+							</xs:element>								
+							<xs:element name="MovementTypeTable" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Таблиця типів руху</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="MovementTypeTableEntry" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Дані типу руху запасів</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>  
+												<xs:sequence>
+													<xs:element ref="MovementType">
+														<xs:annotation>
+															<xs:documentation>Тип руху</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="Description">
+														<xs:annotation>
+															<xs:documentation>Опис типу руху</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>	
+											</xs:complexType>	
+										</xs:element>	
+									</xs:sequence>	
+								</xs:complexType>									
+							</xs:element>
+							<xs:element name="Products" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Номенклатура запасів/продукції (товарів/робіт, послуг)</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Product" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Номенклатурна позиція</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="ProductCode">
+														<xs:annotation>
+															<xs:documentation>Код запасу/продукції (товару/роботи, послуги)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="GoodsServicesID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Ідентифікатор категорії запасу/продукції (товару/роботи, послуги)</xs:documentation>
+														</xs:annotation>														
+													</xs:element>
+													<xs:element name="ProductGroup" type="SAFmiddle2textType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Група запасу/продукції (товару/роботи, послуги)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="Description">
+														<xs:annotation>
+															<xs:documentation>Опис запасу/продукції (товару/роботи, послуги)</xs:documentation>
+														</xs:annotation>
+													</xs:element>	  
+													<xs:element name="ProductCommodityCode" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Товарний код продукції</xs:documentation>
+														</xs:annotation>														
+													</xs:element>	    
+													<xs:element name="ProductNumberCode" type="SAFmiddle2textType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Код ідентифікатора продукції</xs:documentation>
+														</xs:annotation>
+													</xs:element>	  
+													<xs:element name="ValuationMethod" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Метод оцінки</xs:documentation>
+														</xs:annotation>
+														<xs:simpleType>
+															<xs:restriction base="SAFcodeType">
+																<xs:enumeration value="FIFO"/>
+																<xs:enumeration value="WAC"/>
+																<xs:enumeration value="MAC"/>
+																<xs:enumeration value="SI"/>
+																<xs:enumeration value="SC"/>
+																<xs:enumeration value="Retail"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element ref="UOMBase">
+														<xs:annotation>
+															<xs:documentation>Одиниця виміру</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:sequence minOccurs="0" maxOccurs="unbounded">		
+														<xs:element name="UOMStandard" type="SAFcodeType">
+															<xs:annotation>
+																<xs:documentation>Стандартна одиниця виміру</xs:documentation>
+															</xs:annotation>
+														</xs:element>	
+														<xs:element ref="UOMtoUOMBaseConversionFactor">
+															<xs:annotation>
+																<xs:documentation>Коефіцієнт перерахунку стандартної одиниці виміру в базову</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+													</xs:sequence>	
+													<xs:element name="Tax" minOccurs="0" maxOccurs="unbounded"> 
+														<xs:annotation>
+															<xs:documentation>Податкова інформація</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="TaxType">
+																	<xs:annotation>
+																		<xs:documentation>Вид податку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="TaxCode">
+																	<xs:annotation>
+																		<xs:documentation>Код податку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+															</xs:sequence>	
+														</xs:complexType>
+													</xs:element>			
+												</xs:sequence>
+											</xs:complexType>	
+										</xs:element>
+									</xs:sequence>	
+								</xs:complexType>									
+							</xs:element>
+							<xs:element name="PhysicalStock" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Запаси</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="PhysicalStockEntry" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Інформація щодо запасу</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="WarehouseID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Код складу</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="LocationID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Ідентифікатор місцезнаходження</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="ProductCode">
+														<xs:annotation>
+															<xs:documentation>Код запасу/продукції (товару/роботи, послуги)</xs:documentation>
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="AccountID">
+														<xs:annotation>
+															<xs:documentation>Номер рахунку</xs:documentation>
+														</xs:annotation>
+													</xs:element>													
+													<xs:element ref="Analysis" minOccurs="0" maxOccurs="unbounded"> 
+														<xs:annotation>
+															<xs:documentation>Дані в розрізі аналітики</xs:documentation>
+														</xs:annotation>
+													</xs:element>																		
+													<xs:element ref="StockAccountNo" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Складський номер запасу</xs:documentation>
+														</xs:annotation>
+													</xs:element>						  
+													<xs:element name="ProductType" type="SAFshorttextType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Тип запасу/продукції</xs:documentation>
+														</xs:annotation>
+													</xs:element>						
+													<xs:element name="ProductStatus" type="SAFshorttextType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Статус запасу/продукції</xs:documentation>
+														</xs:annotation>														
+													</xs:element>	  						
+													<xs:element name="StockAccountCommodityCode" type="SAFmiddle1textType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Товарний код запасів</xs:documentation>
+														</xs:annotation>														
+													</xs:element>			
+													<xs:element ref="OwnerID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Ідентифікатор власника (засновника)</xs:documentation>
+														</xs:annotation>														
+													</xs:element>				
+													<xs:sequence minOccurs="0">		
+														<xs:element name="UOMPhysicalStock" type="SAFcodeType">
+															<xs:annotation>
+																<xs:documentation>Одиниця виміру запасу</xs:documentation>
+															</xs:annotation>
+														</xs:element>	
+														<xs:element ref="UOMtoUOMBaseConversionFactor">
+															<xs:annotation>
+																<xs:documentation>Коефіцієнт перерахунку одиниці виміру запасу в базову одиницю виміру</xs:documentation>
+															</xs:annotation>
+														</xs:element>
+													</xs:sequence>																																		
+													<xs:element name="OpeningStockQuantity" type="SAFquantityType" nillable="true">
+														<xs:annotation>
+															<xs:documentation>Кількість на початок періоду</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="OpeningUnitPrice" type="SAFquantityType" nillable="true" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Ціна на початок періоду</xs:documentation>
+														</xs:annotation>														
+													</xs:element>
+													<xs:element name="OpeningStockValue" type="SAFmonetaryType" nillable="true" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Сума на початок періду</xs:documentation>
+														</xs:annotation>
+													</xs:element> 																																					
+													<xs:element name="ClosingStockQuantity" type="SAFquantityType" nillable="true">
+														<xs:annotation>
+															<xs:documentation>Кількість на кінець періоду</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="UnitPrice" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Ціна на кінець періоду</xs:documentation>
+														</xs:annotation>
+													</xs:element>			
+													<xs:element name="ClosingStockValue" type="SAFmonetaryType" nillable="true" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Сума на кінець періоду</xs:documentation>
+														</xs:annotation>
+													</xs:element>													
+													<xs:element name="StockCharacteristics" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Характеристики запасу</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="StockCharacteristic" type="SAFshorttextType">
+																	<xs:annotation>
+																		<xs:documentation>Характеристика запасу</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="StockCharacteristicValue" type="SAFmiddle1textType">
+																	<xs:annotation>
+																		<xs:documentation>Значення характеристики запасу</xs:documentation>
+																	</xs:annotation>
+																</xs:element> 
+															</xs:sequence>	
+														</xs:complexType>	
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType> 
+										</xs:element>	
+									</xs:sequence>	
+								</xs:complexType>								
+							</xs:element>
+							<xs:element name="Owners" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Власники (засновники)</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Owner" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Власник (засновник)</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:complexContent>
+													<xs:extension base="CompanyStructure">																								
+														<xs:sequence>																													
+															<xs:element ref="OwnerID">
+																<xs:annotation>
+																	<xs:documentation>Ідентифікатор власника (засновника)</xs:documentation>
+																</xs:annotation>
+															</xs:element> 	
+															<xs:element ref="RelatedPartyCode" minOccurs="0" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Код ознаки пов'язаності</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="OwnerBalance" maxOccurs="unbounded">
+																<xs:annotation>
+																	<xs:documentation>Сальдо рахунку</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>  
+																	<xs:sequence>																	
+																		<xs:element ref="AccountID">
+																			<xs:annotation>
+																				<xs:documentation>Код рахунку</xs:documentation>
+																			</xs:annotation>
+																		</xs:element> 																		
+																		<xs:choice minOccurs="0">
+																			<xs:element ref="OpeningDebitBalance">
+																				<xs:annotation>
+																					<xs:documentation>Початкове дебетове сальдо</xs:documentation>
+																				</xs:annotation>
+																			</xs:element> 	
+																			<xs:element ref="OpeningCreditBalance">
+																				<xs:annotation>
+																					<xs:documentation>Початкове кредитове сальдо</xs:documentation>
+																				</xs:annotation>
+																			</xs:element> 
+																		</xs:choice>
+																		<xs:choice minOccurs="0">															
+																			<xs:element ref="ClosingDebitBalance">
+																				<xs:annotation>
+																					<xs:documentation>Кінцеве дебетове сальдо</xs:documentation>
+																				</xs:annotation>
+																			</xs:element> 	
+																			<xs:element ref="ClosingCreditBalance">
+																				<xs:annotation>
+																					<xs:documentation>Кінцеве кредитове сальдо</xs:documentation>
+																				</xs:annotation>
+																			</xs:element> 	
+																		</xs:choice>	
+																		<xs:element ref="Analysis" minOccurs="0" maxOccurs="unbounded"> 
+																			<xs:annotation>
+																				<xs:documentation>Дані в розрізі аналітики</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>	
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>		
+															<xs:element name="OwnerShare" maxOccurs="unbounded">
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="SumOfContribution" type="AmountStructure">
+																			<xs:annotation>
+																				<xs:documentation>Сума внеску</xs:documentation>
+																			</xs:annotation>
+																		</xs:element> 	
+																		<xs:element name="FormOfContribution" type="SAFlongtextType" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Форма внеску</xs:documentation>
+																			</xs:annotation>																			
+																		</xs:element>
+																		<xs:element name="ShareOfStatutoryFund" type="SAFpercentageType" minOccurs="0">
+																			<xs:annotation>
+																				<xs:documentation>Частка (доля) у статутному капіталі</xs:documentation>
+																			</xs:annotation>																			
+																		</xs:element>			
+																	</xs:sequence>	
+																</xs:complexType>	
+															</xs:element>													
+														</xs:sequence>	
+													</xs:extension>	
+												</xs:complexContent>		
+											</xs:complexType>
+										</xs:element>	
+									</xs:sequence>
+								</xs:complexType>															
+							</xs:element>																		
+							<xs:element name="Assets" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Необоротні активи</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Asset" maxOccurs="unbounded"> 
+											<xs:annotation>
+												<xs:documentation>Актив</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="AssetID">
+														<xs:annotation>
+															<xs:documentation>Код активу</xs:documentation>
+														</xs:annotation>
+													</xs:element>  
+													<xs:element ref="AccountID">
+														<xs:annotation>
+															<xs:documentation>Код рахунку</xs:documentation>
+														</xs:annotation>
+													</xs:element>   														 
+													<xs:element ref="Description">
+														<xs:annotation>
+															<xs:documentation>Опис активу</xs:documentation>
+														</xs:annotation>
+													</xs:element> 
+													<xs:element name="AssetRegistrationID" type="SAFmiddle2textType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Реєстраційний номер об’єкта нерухомого майна</xs:documentation>
+														</xs:annotation>
+													</xs:element> 
+													<xs:element name="AssetCadastralID" type="SAFmiddle2textType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Кадастровий номер земельної ділянки</xs:documentation>
+														</xs:annotation>
+													</xs:element> 
+													<xs:element name="Supplier" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Постачальник</xs:documentation>
+														</xs:annotation>													
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="SupplierName">
+																	<xs:annotation>
+																		<xs:documentation>Найменування постачальника</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="SupplierID" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Ідентифікатор постачальника</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="PostalAddress" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Місцезнаходження</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>	
+													</xs:element>	
+													<xs:element name="PurchaseOrderDate" type="SAFdateType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дата замовлення на придбання</xs:documentation>
+														</xs:annotation>
+													</xs:element>  
+													<xs:element name="DateOfAquisition" type="SAFdateType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дата придбання</xs:documentation>
+														</xs:annotation>
+													</xs:element>  
+													<xs:element name="StartUpDate" type="SAFdateType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дата початку роботи</xs:documentation>
+														</xs:annotation>
+													</xs:element>  	  
+													<xs:element name="DecommissionDate" type="SAFdateType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дата виведення з експлуатації</xs:documentation>
+														</xs:annotation>
+													</xs:element>  
+													<xs:element name="AssetDisposalDate" type="SAFdateType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дата вибуття</xs:documentation>
+														</xs:annotation>
+													</xs:element>  	
+													<xs:element name="Valuations">
+														<xs:annotation>
+															<xs:documentation>Оцінки</xs:documentation>
+														</xs:annotation>  
+														<xs:complexType>   
+															<xs:sequence>
+																<xs:element name="Valuation" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Оцінка</xs:documentation>
+																	</xs:annotation> 
+																	<xs:complexType>   
+																		<xs:sequence>
+																			<xs:element ref="AssetValuationType" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Тип оцінки активу</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>  
+																			<xs:element name="ValuationClass" type="SAFshorttextType" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Група активу</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>  
+																			<xs:element name="AcquisitionAndProductionCostsBegin" type="SAFmonetaryType" nillable="true">
+																				<xs:annotation>
+																					<xs:documentation>Первісна вартість на початок періоду</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>   
+																			<xs:element name="AcquisitionAndProductionCostsEnd" type="SAFmonetaryType" nillable="true">
+																				<xs:annotation>
+																					<xs:documentation>Первісна вартість на кінець періоду</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>   
+																			<xs:element name="InvestmentSupport" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Інвестиційна підтримка</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>  	
+																			<xs:choice minOccurs="0">
+																				<xs:element name="AssetLifeYear" type="xs:decimal">
+																					<xs:annotation>
+																						<xs:documentation>Строк корисного використання (експлуатації) в роках</xs:documentation>															
+																					</xs:annotation>
+																				</xs:element>  
+																				<xs:element name="AssetLifeMonth" type="xs:decimal">
+																					<xs:annotation>
+																						<xs:documentation>Строк корисного використання (експлуатації) в місяцях</xs:documentation>															
+																					</xs:annotation>
+																				</xs:element>  
+																			</xs:choice>	
+																			<xs:element name="AssetAddition" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Надходження активу</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>  
+																			<xs:element name="Transfers" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Передача (переведення) активу</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>  
+																			<xs:element name="AssetDisposal" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Вибуття активу</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>  
+																			<xs:element name="BookValueBegin" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Балансова вартість на початок періоду</xs:documentation>															
+																				</xs:annotation>
+																			</xs:element>  
+																			<xs:element name="DepreciationMethod" type="SAFmiddle1textType" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Метод амортизації</xs:documentation>															
+																				</xs:annotation>
+																			</xs:element>    
+																			<xs:element name="DepreciationPercentage" type="SAFpercentageType" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Норма амортизації</xs:documentation>															
+																				</xs:annotation>
+																			</xs:element>  
+																			<xs:element name="DepreciationForPeriod" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Амортизація за період</xs:documentation>															
+																				</xs:annotation>
+																			</xs:element> 																			
+																			<xs:element name="AppreciationMethod" type="SAFmiddle1textType" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Метод дооцінки/уцінки</xs:documentation>															
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="AppreciationForPeriod" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Сума дооцінки/уцінки</xs:documentation>															
+																				</xs:annotation>
+																			</xs:element>  
+																			<xs:element name="ExtraordinaryDepreciationsForPeriod" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Екстраординарні амортизації</xs:documentation>															
+																				</xs:annotation>
+																				<xs:complexType>   
+																					<xs:sequence>
+																						<xs:element name="ExtraordinaryDepreciationForPeriod" maxOccurs="unbounded">
+																							<xs:annotation>
+																								<xs:documentation>Екстраординарна амортизація</xs:documentation>															
+																							</xs:annotation>
+																							<xs:complexType>   
+																								<xs:sequence>
+																									<xs:element name="ExtraordinaryDepreciationMethod" type="SAFmiddle1textType">
+																										<xs:annotation>
+																											<xs:documentation>Метод екстраординарної амортизації</xs:documentation>															
+																										</xs:annotation>
+																									</xs:element>  
+																									<xs:element name="ExtraordinaryDepreciationForPeriod" type="SAFmonetaryType" nillable="true">
+																										<xs:annotation>
+																											<xs:documentation>Екстраординарна амортизація за період</xs:documentation>															
+																										</xs:annotation>
+																									</xs:element>  																									
+																								</xs:sequence>
+																							</xs:complexType> 
+																						</xs:element>
+																					</xs:sequence>  
+																				</xs:complexType> 
+																			</xs:element>	
+																			<xs:element name="AccumulatedDepreciation" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Накопичена амортизація</xs:documentation>															
+																				</xs:annotation>
+																			</xs:element>  
+																			<xs:element name="BookValueEnd" type="SAFmonetaryType" nillable="true">
+																				<xs:annotation>
+																					<xs:documentation>Балансова вартість на кінець періоду</xs:documentation>															
+																				</xs:annotation>
+																			</xs:element>  			
+																		</xs:sequence>  
+																	</xs:complexType> 
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType> 
+													</xs:element>													  														
+													<xs:element name="ResidualValue" type="SAFmonetaryType" nillable="true" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Ліквідаційна вартість</xs:documentation>															
+														</xs:annotation>
+													</xs:element>  														
+												</xs:sequence>
+											</xs:complexType> 
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>									
+							</xs:element>	
+							<xs:element name="TaxDifferences" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Податкові різниці</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TaxDifference" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Податкова різниця</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="TaxDifference" type="SAFshorttextType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Елемент податкових різниць</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="TaxDifferencesDescription" type="SAFstringType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Назва податкової різниці</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="OrderOfAccount" type="SAFstringType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Порядок обрахунку</xs:documentation>
+														</xs:annotation>
+													</xs:element>														
+													<xs:element name="TaxDifferenceAmountForPeriod" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Сума за період</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>	
+																<xs:element ref="PeriodYear" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Звітний рік</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="PartOfPeriodYear" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Звітний період</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="SAFshorttextType">
+																			<xs:enumeration value="1 квартал"/>
+																			<xs:enumeration value="півріччя"/>
+																			<xs:enumeration value="три квартали"/>
+																			<xs:enumeration value="рік"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>																
+																<xs:element name="TaxDifferencesAmount" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Сума</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	    
+															</xs:sequence>
+														</xs:complexType>	
+													</xs:element>	
+													<xs:element name="TaxDifferenceTransactions" minOccurs="0" maxOccurs="unbounded"> 
+														<xs:annotation>
+															<xs:documentation>Операції податкової різниці</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="TransactionID">  
+																	<xs:annotation>
+																		<xs:documentation>Код операції</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="DocumentID" type="SAFmiddle2textType" minOccurs="0">  
+																	<xs:annotation>
+																		<xs:documentation>Код документа</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																
+																<xs:element ref="DocumentDate" minOccurs="0">  
+																	<xs:annotation>
+																		<xs:documentation>Дата</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="DocumentDescription" minOccurs="0">  
+																	<xs:annotation>
+																		<xs:documentation>Назва документа</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="TransactionDescription" minOccurs="0">  
+																	<xs:annotation>
+																		<xs:documentation>Опис операції</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="AccountID">  
+																	<xs:annotation>
+																		<xs:documentation>Код рахунку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="CorrespondingAccountID" minOccurs="0">  
+																	<xs:annotation>
+																		<xs:documentation>Код кореспондуючого рахунку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="Analysis" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Дані в розрізі аналітики</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="Amount" minOccurs="0">  
+																	<xs:annotation>
+																		<xs:documentation>Сума</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																	
+																<xs:element name="TotalValueOfIncreaseOfFinancialResult" type="SAFlongtextType" minOccurs="0">  
+																	<xs:annotation>
+																		<xs:documentation>Збільшення фінансового результату</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="TotalValueOfReductionOfFinancialResult" type="SAFlongtextType" minOccurs="0">  
+																	<xs:annotation>
+																		<xs:documentation>Зменшення фінансового результату</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="Notes" type="SAFstringType" minOccurs="0">  
+																	<xs:annotation>
+																		<xs:documentation>Додаткова інформація</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+															</xs:sequence>	
+														</xs:complexType>
+													</xs:element>			
+												</xs:sequence>
+											</xs:complexType>	
+										</xs:element>
+									</xs:sequence>	
+								</xs:complexType>									
+							</xs:element>
+						</xs:sequence>	
+					</xs:complexType>
+				</xs:element>				
+				<xs:element name="GeneralLedgerEntries" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>III. Бухгалтерські операції</xs:documentation>
+					</xs:annotation>	
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="NumberOfEntries" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Кількість облікових записів</xs:documentation>
+								</xs:annotation>
+							</xs:element>	 
+							<xs:element ref="TotalDebit" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Загальна сума по дебету</xs:documentation>
+								</xs:annotation>
+							</xs:element>	 
+							<xs:element ref="TotalCredit" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Загальна сума по кредиту</xs:documentation>
+								</xs:annotation>
+							</xs:element>	 
+							<xs:element name="Journal" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Журнал бухгалтерських операцій</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="JournalID" type="SAFshorttextType" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Ідентифікатор облікового регістру</xs:documentation>
+											</xs:annotation>
+										</xs:element>	 
+										<xs:element ref="Description" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Опис</xs:documentation>
+											</xs:annotation>
+										</xs:element>	 
+										<xs:element name="Type" type="SAFcodeType" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Тип</xs:documentation>
+											</xs:annotation>
+										</xs:element>	 
+										<xs:element name="Transaction" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Операція</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="TransactionID">
+														<xs:annotation>
+															<xs:documentation>Код операції</xs:documentation>
+														</xs:annotation>
+													</xs:element>	 
+													<xs:element ref="Period">
+														<xs:annotation>
+															<xs:documentation>Обліковий період</xs:documentation>
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="PeriodYear">
+														<xs:annotation>
+															<xs:documentation>Звітний рік</xs:documentation>
+														</xs:annotation>
+													</xs:element>												
+													<xs:element ref="TransactionDate">
+														<xs:annotation>
+															<xs:documentation>Дата операції</xs:documentation>
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="SourceID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Код джерела</xs:documentation>
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="TransactionType">
+														<xs:annotation>
+															<xs:documentation>Тип операції</xs:documentation>
+														</xs:annotation>
+													</xs:element>	 												
+													<xs:element ref="Description" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Опис</xs:documentation>
+														</xs:annotation>
+													</xs:element>	 											
+													<xs:element ref="BatchID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Код партії</xs:documentation>
+														</xs:annotation>
+													</xs:element>	 											
+													<xs:element name="SystemEntryDate" type="SAFdateType">
+														<xs:annotation>
+															<xs:documentation>Системна дата</xs:documentation>
+														</xs:annotation>
+													</xs:element>	 												
+													<xs:element ref="GLPostingDate">
+														<xs:annotation>
+															<xs:documentation>Дата облікового запису</xs:documentation>
+														</xs:annotation>
+													</xs:element>	 									
+													<xs:element name="SystemID" type="SAFshorttextType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Системний номер</xs:documentation>
+														</xs:annotation>
+													</xs:element>												
+													<xs:element name="Line" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Рядок</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="RecordID" type="SAFshorttextType">
+																	<xs:annotation>
+																		<xs:documentation>Ідентифікатор облікового запису</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="AccountID" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Код рахунку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:choice minOccurs="0">																
+																	<xs:element ref="CustomerID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор покупця</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>							
+																	<xs:element ref="SupplierID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор постачальника</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>				
+																	<xs:element ref="OwnerID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор власника (засновника)</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>	
+																</xs:choice>
+																<xs:element ref="Name" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Найменування покупця/постачальника/власника</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																			
+																<xs:element ref="CorrespondingAccountID" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Код кореспондуючого рахунку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																
+																<xs:choice minOccurs="0">																
+																	<xs:element ref="CustomerID1" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор покупця1</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>							
+																	<xs:element ref="SupplierID1" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор постачальника1</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>				
+																	<xs:element ref="OwnerID1" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор власника (засновника)1</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>	
+																</xs:choice>
+																<xs:element name="Name1" type="SAFmiddle2textType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Найменування покупця1/постачальника1/власника1</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																
+																<xs:element ref="Analysis" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Дані в розрізі аналітики</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="ValueDate" type="SAFdateType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Дата визнання</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="SourceDocumentID" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Номер документа</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																																						
+																<xs:element ref="Description" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Опис</xs:documentation>
+																	</xs:annotation>
+																</xs:element>	
+																<xs:choice>
+																	<xs:element name="DebitAmount" type="AmountStructure">
+																		<xs:annotation>
+																			<xs:documentation>Сума за дебетом</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>	
+																	<xs:element name="CreditAmount" type="AmountStructure">
+																		<xs:annotation>
+																			<xs:documentation>Сума за кредитом</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>	
+																</xs:choice>
+																<xs:element ref="TaxInformation" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Податкова інформація</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																					
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>				
+	    	    <xs:element name="SourceDocuments" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>ІV. Інформація про документальне забезпечення записів бухгалтерського обліку</xs:documentation>
+					</xs:annotation>		
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SalesInvoices" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Відомості про продаж</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="NumberOfEntries" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Кількість облікових записів</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+										<xs:element ref="TotalDebit" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Загальна сума по дебету</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+										<xs:element ref="TotalCredit" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Загальна сума по кредиту</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+										<xs:element ref="Invoice" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Рахунок-фактура</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+									</xs:sequence>
+								</xs:complexType>		
+							</xs:element>	
+							<xs:element name="PurchaseInvoices" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Відомості про придбання/закупівлю</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="NumberOfEntries" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Кількість облікових записів</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+										<xs:element ref="TotalDebit" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Загальна сума по дебету</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+										<xs:element ref="TotalCredit" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Загальна сума по кредиту</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+										<xs:element ref="Invoice" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Рахунок-фактура</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+									</xs:sequence>
+								</xs:complexType>		
+							</xs:element>				
+							<xs:element name="Payments" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Відомості про платежі</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="NumberOfEntries" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Кількість облікових записів</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+										<xs:element ref="TotalDebit" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Загальна сума по дебету</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+										<xs:element ref="TotalCredit" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Загальна сума по кредиту</xs:documentation>
+											</xs:annotation>
+										</xs:element>			
+										<xs:element name="Payment" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Платіж</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="PaymentRefNo" type="SAFmiddle1textType">
+														<xs:annotation>
+															<xs:documentation>Код документа</xs:documentation>
+														</xs:annotation>
+													</xs:element>			
+													<xs:element ref="Period" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Обліковий період</xs:documentation>
+														</xs:annotation>
+													</xs:element>			
+													<xs:element ref="PeriodYear" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Звітний рік</xs:documentation>
+														</xs:annotation>
+													</xs:element>			
+													<xs:element ref="TransactionID">
+														<xs:annotation>
+															<xs:documentation>Код операції</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="TransactionDate">
+														<xs:annotation>
+															<xs:documentation>Дата</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="PaymentMethod" type="SAFcodeType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Спосіб оплати</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="SettlementDate" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дата валютування (розрахунку)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="Description">
+														<xs:annotation>
+															<xs:documentation>Назва документа</xs:documentation>
+														</xs:annotation>
+													</xs:element>																										
+													<xs:element ref="BatchID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Код партії</xs:documentation>
+														</xs:annotation>
+													</xs:element>		
+													<xs:element name="SystemID" type="SAFmiddle1textType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Системний номер</xs:documentation>
+														</xs:annotation>
+													</xs:element>															
+													<xs:element ref="SourceID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Джерело</xs:documentation>
+														</xs:annotation>
+													</xs:element>															
+													<xs:element name="Line" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Рядок</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="LineNumber" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Номер рядка</xs:documentation>
+																	</xs:annotation>
+																</xs:element>							
+																<xs:element ref="SourceDocumentID" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Призначення платежу</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																				
+																<xs:element ref="AccountID">
+																	<xs:annotation>
+																		<xs:documentation>Код рахунку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																		
+																<xs:element ref="CorrespondingAccountID">
+																	<xs:annotation>
+																		<xs:documentation>Код кореспондуючого рахунку</xs:documentation>
+																	</xs:annotation>
+																</xs:element>			
+																<xs:element ref="Analysis" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Дані в розрізі аналітики</xs:documentation>
+																	</xs:annotation>
+																</xs:element>		
+																<xs:choice minOccurs="0">
+																	<xs:element ref="CustomerID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор покупця</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>																																			
+																	<xs:element ref="SupplierID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор постачальника</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>																			
+																	<xs:element ref="OwnerID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор власника (засновника)</xs:documentation>
+																		</xs:annotation>
+																	</xs:element> 	
+																</xs:choice>		
+																<xs:element ref="Name" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Найменування покупця/постачальника/власника</xs:documentation>
+																	</xs:annotation>
+																</xs:element> 																	
+																<xs:element ref="TaxPointDate" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Дата оподаткування</xs:documentation>
+																	</xs:annotation>
+																</xs:element> 		
+																<xs:element ref="Description" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Вид платежу</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="BudgetPaymentID" type="SAFlongtextType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Коди бюджетних платежів</xs:documentation>
+																	</xs:annotation>
+																</xs:element>		
+																<xs:element ref="DebitCreditIndicator" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Дебетова/кредитова ознака</xs:documentation>
+																	</xs:annotation>
+																</xs:element> 		
+																<xs:element name="PaymentLineAmount" type="AmountStructure">
+																	<xs:annotation>
+																		<xs:documentation>Сума за рядком платежу</xs:documentation>
+																	</xs:annotation>
+																</xs:element> 		
+																<xs:element ref="TaxInformation" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Податкова інформація</xs:documentation>
+																	</xs:annotation>
+																</xs:element> 		
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element ref="Settlement" minOccurs="0"> 
+														<xs:annotation>
+															<xs:documentation>Знижка</xs:documentation>
+														</xs:annotation>				
+													</xs:element>
+													<xs:element name="DocumentTotals" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Підсумки документа</xs:documentation>
+														</xs:annotation>		
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="TaxInformationTotals" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Сума податків</xs:documentation>
+																	</xs:annotation>
+																</xs:element>																	
+																<xs:element ref="NetTotal" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Сума без податків</xs:documentation>
+																	</xs:annotation>
+																</xs:element>		
+																<xs:element ref="GrossTotal">
+																	<xs:annotation>
+																		<xs:documentation>Загальна сума</xs:documentation>
+																	</xs:annotation>
+																</xs:element>		     
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>	
+									</xs:sequence>
+								</xs:complexType>				
+							</xs:element>	
+							<xs:element name="MovementOfGoods" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Операції із запасами</xs:documentation>
+								</xs:annotation>	
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="NumberOfMovementLines" type="xs:nonNegativeInteger" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Кількість операцій з руху запасів</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="TotalQuantityReceived" type="SAFquantityType" nillable="true" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Загальна кількість надходження запасів</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="TotalQuantityIssued" type="SAFquantityType" nillable="true" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Загальна кількість вибуття запасів</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="StockMovement" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Рух запасів</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="MovementReference">
+														<xs:annotation>
+															<xs:documentation>Посилання на рух запасів</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element name="MovementDate" type="SAFdateType">
+														<xs:annotation>
+															<xs:documentation>Дата руху запасів</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element name="MovementPostingDate" type="SAFdateType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дата проведення в обліку операції з руху запасів</xs:documentation>														
+														</xs:annotation>
+													</xs:element>		
+													<xs:element name="MovementPostingTime" type="xs:time" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Час проведення в обліку операції з руху запасів</xs:documentation>														
+														</xs:annotation>
+													</xs:element>		
+													<xs:element ref="TaxPointDate" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Дата оподаткування</xs:documentation>														
+														</xs:annotation>
+													</xs:element>		
+													<xs:element ref="MovementType">
+														<xs:annotation>
+															<xs:documentation>Тип руху</xs:documentation>														
+														</xs:annotation>
+													</xs:element>		
+													<xs:element ref="SourceID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Джерело</xs:documentation>														
+														</xs:annotation>
+													</xs:element>				
+													<xs:element name="SystemID" type="SAFmiddle1textType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Системний номер</xs:documentation>														
+														</xs:annotation>
+													</xs:element>					
+													<xs:element name="DocumentReference">	
+														<xs:annotation>
+															<xs:documentation>Дані документа</xs:documentation>														
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="DocumentType" type="SAFshorttextType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Тип документа</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>					
+																<xs:element ref="DocumentNumber">
+																	<xs:annotation>
+																		<xs:documentation>Номер документа</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="DocumentLine" type="SAFshorttextType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Рядок документа</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>	
+															</xs:sequence>	
+														</xs:complexType>
+													</xs:element>	
+													<xs:element name="Line" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Рядок</xs:documentation>														
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="LineNumber">
+																	<xs:annotation>
+																		<xs:documentation>Номер рядка</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>														
+																<xs:element ref="AccountID" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Код рахунку</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>																
+																<xs:element ref="CorrespondingAccountID" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Код кореспондуючого рахунку</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="GrossTotal">
+																	<xs:annotation>
+																		<xs:documentation>Сума</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="Analysis" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Дані в розрізі аналітики</xs:documentation>															
+																	</xs:annotation>
+																</xs:element>  
+																<xs:element ref="TransactionID">
+																	<xs:annotation>
+																		<xs:documentation>Код операції</xs:documentation>															
+																	</xs:annotation>
+																</xs:element>  
+																<xs:choice minOccurs="0">
+																	<xs:element ref="CustomerID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор покупця</xs:documentation>														
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:element ref="SupplierID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор постачальника</xs:documentation>														
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:element ref="OwnerID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор власника (засновника)</xs:documentation>														
+																		</xs:annotation>
+																	</xs:element>
+																</xs:choice>		
+																<xs:element ref="Name" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Найменування покупця/постачальника/власника</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="ShipTo" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Пункт розвантаження</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="ShipFrom" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Пункт навантаження</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>															
+																<xs:element ref="ProductCode">
+																	<xs:annotation>
+																		<xs:documentation>Код запасу</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="Description">
+																	<xs:annotation>
+																		<xs:documentation>Опис запасу</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>		
+																<xs:element ref="StockAccountNo" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Складський номер запасу</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="Quantity">
+																	<xs:annotation>
+																		<xs:documentation>Кількість</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>																
+																<xs:sequence minOccurs="0">
+																	<xs:element ref="UnitOfMeasure">
+																		<xs:annotation>
+																			<xs:documentation>Одиниця виміру</xs:documentation>														
+																		</xs:annotation>
+																	</xs:element>	
+																	<xs:element name="UOMToUOMPhysicalStockConversionFactor" type="xs:decimal">
+																		<xs:annotation>
+																			<xs:documentation>Коефіцієнт перерахунку одиниці виміру в складську</xs:documentation>														
+																		</xs:annotation>
+																	</xs:element>
+																</xs:sequence>	
+																<xs:element ref="UnitPrice">
+																	<xs:annotation>
+																		<xs:documentation>Ціна</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element name="BookValue" type="SAFmonetaryType" nillable="true">
+																	<xs:annotation>
+																		<xs:documentation>Сума</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>																
+																<xs:element name="MovementSubType" type="SAFcodeType">
+																	<xs:annotation>
+																		<xs:documentation>Підтип руху</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="MovementComments" type="SAFlongtextType" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Коментарі до руху</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>																
+																<xs:element ref="TaxInformation" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Податкова інформація</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>															
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>	
+									</xs:sequence>
+								</xs:complexType>				
+							</xs:element>	
+							<xs:element name="AssetTransactions" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Операції з необоротними активами</xs:documentation>														
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="NumberOfAssetTransactions" type="xs:nonNegativeInteger" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Кількість операцій з активами</xs:documentation>														
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="AssetTransaction" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Операція з активом</xs:documentation>														
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="AssetTransactionID" type="SAFmiddle2textType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Ідентифікатор операції</xs:documentation>														
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="AssetID">
+														<xs:annotation>
+															<xs:documentation>Код активу</xs:documentation>														
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AssetName" type="SAFlongtextType">
+														<xs:annotation>
+															<xs:documentation>Опис активу</xs:documentation>														
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AssetTransactionType" type="SAFcodeType">
+														<xs:annotation>
+															<xs:documentation>Тип операції</xs:documentation>														
+														</xs:annotation>
+													</xs:element>		
+													<xs:element ref="Description" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Опис операції</xs:documentation>														
+														</xs:annotation>
+													</xs:element>		
+													<xs:element name="AssetTransactionDate" type="SAFdateType">
+														<xs:annotation>
+															<xs:documentation>Дата</xs:documentation>														
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Supplier" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Постачальник</xs:documentation>														
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="SupplierName">
+																	<xs:annotation>
+																		<xs:documentation>Найменування постачальника</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="SupplierID" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Ідентифікатор постачальника</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="PostalAddress" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Місцезнаходження</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>	
+													</xs:element>															
+													<xs:element ref="TransactionID">
+														<xs:annotation>
+															<xs:documentation>Код операції</xs:documentation>														
+														</xs:annotation>
+													</xs:element>																								
+													<xs:element name="AssetTransactionValuations">
+														<xs:annotation>
+															<xs:documentation>Оцінки операції з активом</xs:documentation>														
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="AssetTransactionValuation" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Оцінка операції з активом</xs:documentation>														
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element ref="AssetValuationType" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Тип оцінки активу</xs:documentation>														
+																				</xs:annotation>
+																			</xs:element>									
+																			<xs:element name="AcquisitionAndProductionCostsOnTransaction" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Первісна вартість за операцією</xs:documentation>														
+																				</xs:annotation>
+																			</xs:element>									
+																			<xs:element name="BookValueOnTransaction" type="SAFmonetaryType" nillable="true" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Балансова вартість за операцією</xs:documentation>														
+																				</xs:annotation>
+																			</xs:element>									
+																			<xs:element name="AssetTransactionAmount" type="SAFmonetaryType" nillable="true">
+																				<xs:annotation>
+																					<xs:documentation>Сума операції з активом</xs:documentation>														
+																				</xs:annotation>
+																			</xs:element>																										
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>				
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>		
+													<xs:element ref="DocumentNumber">
+														<xs:annotation>
+															<xs:documentation>Номер документа</xs:documentation>														
+														</xs:annotation>
+													</xs:element>			
+													<xs:element ref="AccountID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Код рахунку</xs:documentation>														
+														</xs:annotation>
+													</xs:element>																				
+													<xs:element ref="Analysis" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Дані в розрізі аналітики</xs:documentation>															
+														</xs:annotation>
+													</xs:element>  
+													<xs:element ref="CorrespondingAccountID" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Код кореспондуючого рахунку</xs:documentation>														
+														</xs:annotation>
+													</xs:element>				
+													<xs:element ref="TaxInformation" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Податкова інформація</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="GrossTotal">
+														<xs:annotation>
+															<xs:documentation>Загальна сума</xs:documentation>														
+														</xs:annotation>
+													</xs:element>				
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>	
+									</xs:sequence>
+								</xs:complexType>				
+							</xs:element>	
+							<xs:element name="OtherSourceDocuments" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Інформація про бухгалтерські довідки та інші первинні документи</xs:documentation>														
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="NumberOfEntries" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Кількість облікових записів</xs:documentation>														
+											</xs:annotation>
+										</xs:element>
+										<xs:element ref="TotalDebit" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Загальна сума по дебету</xs:documentation>														
+											</xs:annotation>
+										</xs:element>
+										<xs:element ref="TotalCredit" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Загальна сума по кредиту</xs:documentation>														
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="OtherSourceDocument" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Інший первинний документ</xs:documentation>														
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="TransactionID">
+														<xs:annotation>
+															<xs:documentation>Код операції</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="TransactionType" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Тип операції</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="DocumentNumber">
+														<xs:annotation>
+															<xs:documentation>Код документа</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="DocumentDate">
+														<xs:annotation>
+															<xs:documentation>Дата</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element name="DocumentDescription" type="SAFshorttextType">
+														<xs:annotation>
+															<xs:documentation>Назва документа</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="TransactionDescription">
+														<xs:annotation>
+															<xs:documentation>Опис операції</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="Period" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Обліковий період</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element ref="PeriodYear" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Звітний рік</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+													<xs:element name="Line" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Рядок</xs:documentation>														
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="LineNumber" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Номер рядка</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="DebitCreditIndicator" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Дебетова/кредитова ознака</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>			
+																<xs:element ref="AccountID" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Код рахунку</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>
+																<xs:choice minOccurs="0">																
+																	<xs:element ref="CustomerID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор покупця</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>							
+																	<xs:element ref="SupplierID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор постачальника</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>				
+																	<xs:element ref="OwnerID" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор власника (засновника)</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>	
+																</xs:choice>																																
+																<xs:element ref="CorrespondingAccountID" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Код кореспондуючого рахунку</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>
+																<xs:choice minOccurs="0">																
+																	<xs:element ref="CustomerID1" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор покупця1</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>							
+																	<xs:element ref="SupplierID1" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор постачальника1</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>				
+																	<xs:element ref="OwnerID1" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>Ідентифікатор власника (засновника)1</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>	
+																</xs:choice>
+																<xs:element ref="Analysis" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Дані в розрізі аналітики</xs:documentation>															
+																	</xs:annotation>
+																</xs:element> 		
+																<xs:element ref="Amount">
+																	<xs:annotation>
+																		<xs:documentation>Сума без податку на додану вартість</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>	
+																<xs:element ref="TaxInformation" minOccurs="0" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Податкова інформація</xs:documentation>														
+																	</xs:annotation>
+																</xs:element>	
+															</xs:sequence>	
+														</xs:complexType>		
+													</xs:element>	
+													<xs:element name="GrossTotal" type="AmountStructure">
+														<xs:annotation>
+															<xs:documentation>Загальна сума</xs:documentation>														
+														</xs:annotation>
+													</xs:element>	
+												</xs:sequence>	
+											</xs:complexType>	
+										</xs:element>	
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>			
+						</xs:sequence>
+					</xs:complexType>		
+				</xs:element>
+	        </xs:sequence>
+        </xs:complexType>		
+	</xs:element>	
+
+	<!-- структури -->  
+	<xs:complexType name="HeaderStructure">
+		<xs:annotation>
+			<xs:documentation>Структура заголовку</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AuditFileVersion" type="SAFcodeType">
+				<xs:annotation>
+					<xs:documentation>Версія стандартного аудиторського файла</xs:documentation>
+				</xs:annotation>
+			</xs:element>		
+			<xs:element name="AuditFileCountry" type="ISOCountryCode">
+				<xs:annotation>
+					<xs:documentation>Країна аудиту</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="AuditFileRegion" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Регіон аудиту</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AuditFileDateCreated" type="SAFdateType">
+				<xs:annotation>
+					<xs:documentation>Дата створення</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="SoftwareCompanyName" type="SAFmiddle2textType">
+				<xs:annotation>
+					<xs:documentation>Найменування компанії програмного забезпечення</xs:documentation>
+				</xs:annotation>	  
+			</xs:element>
+			<xs:element name="SoftwareID" type="SAFlongtextType">
+				<xs:annotation>
+					<xs:documentation>Ідентифікатор програмного забезпечення</xs:documentation>
+				</xs:annotation>	  
+			</xs:element>
+			<xs:element name="SoftwareVersion" type="SAFshorttextType">
+				<xs:annotation>
+					<xs:documentation>Версія програмного забезпечення</xs:documentation>
+				</xs:annotation>	  
+			</xs:element>
+			<xs:element name="Company" type="CompanyHeaderStructure"> 	
+				<xs:annotation>
+					<xs:documentation>Суб’єкт господарювання</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="DefaultCurrencyCode" type="ISOCurrencyCode">
+				<xs:annotation>
+					<xs:documentation>Код валюти за замовчуванням</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SelectionCriteria" type="SelectionCriteriaStructure">
+				<xs:annotation>
+					<xs:documentation>Критерії відбору</xs:documentation>
+				</xs:annotation>
+			</xs:element>			
+			<xs:element name="HeaderComment" type="SAFlongtextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Коментар</xs:documentation>
+				</xs:annotation>
+			</xs:element>		
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="CompanyHeaderStructure"> 
+		<xs:annotation>
+			<xs:documentation>Структура даних про суб’єкта господарювання</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="CompanyStructure">
+				<xs:sequence>
+					<xs:element ref="RegistrationNumber">
+						<xs:annotation>
+							<xs:documentation>Код ЄДРПОУ</xs:documentation>
+						</xs:annotation>
+					</xs:element>	
+					<xs:element ref="Name">
+						<xs:annotation>
+							<xs:documentation>Найменування суб’єкта господарювання</xs:documentation>
+						</xs:annotation>	
+					</xs:element>	
+					<xs:element ref="Address" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Місцезнаходження</xs:documentation>
+						</xs:annotation>
+					</xs:element>			
+					<xs:element name="Contact" type="ContactHeaderStructure" maxOccurs="unbounded"> 
+						<xs:annotation>
+							<xs:documentation>Посадові (уповноважені) особи суб’єкта господарювання</xs:documentation>
+						</xs:annotation>	
+					</xs:element>	
+					<xs:element ref="TaxRegistration" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Реєстраційні дані платника податків</xs:documentation>
+						</xs:annotation>	
+					</xs:element>		
+					<xs:element ref="BankAccount" minOccurs="0" maxOccurs="unbounded"> 
+						<xs:annotation>
+							<xs:documentation>Банківський рахунок</xs:documentation>
+						</xs:annotation>	
+					</xs:element>
+				</xs:sequence>
+			</xs:restriction>	
+		</xs:complexContent>	
+	</xs:complexType>
+	
+	<xs:complexType name="ContactHeaderStructure"> 
+		<xs:annotation>
+			<xs:documentation>Структура контактної інформації заголовку</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:restriction base="ContactInformationStructure">
+				<xs:sequence>
+					<xs:element ref="ContactPerson">
+						<xs:annotation>
+							<xs:documentation>Посадова (уповноважена) особа суб’єкта господарювання</xs:documentation>
+						</xs:annotation>
+					</xs:element>							  			    
+					<xs:element ref="Telephone" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Телефон</xs:documentation>
+						</xs:annotation>
+					</xs:element>		
+					<xs:element name="Fax" type="SAFshorttextType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Факс</xs:documentation>
+						</xs:annotation>
+					</xs:element>							
+					<xs:element ref="Email" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>E-mail</xs:documentation>
+						</xs:annotation>
+					</xs:element>								
+					<xs:element name="Website" type="xs:anyURI" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Веб-сайт</xs:documentation>
+						</xs:annotation>
+					</xs:element>					
+				</xs:sequence> 
+			</xs:restriction>
+		</xs:complexContent>		
+	</xs:complexType>		
+	
+	<xs:complexType name="SelectionCriteriaStructure"> 
+		<xs:annotation>
+			<xs:documentation>Структура критеріїв відбору</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TaxReportingJurisdiction" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Юрисдикція податкової звітності</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CompanyEntity" type="SAFmiddle2textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Бізнес-одиниця</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SelectionStartDate" type="SAFdateType">
+				<xs:annotation>
+					<xs:documentation>Дата початку</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="SelectionEndDate" type="SAFdateType">
+				<xs:annotation>
+					<xs:documentation>Дата закінчення</xs:documentation>
+				</xs:annotation>
+			</xs:element>						
+			<xs:element name="OtherCriteria" type="SAFlongtextType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Інші критерії</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="BankAccountStructure"> 
+		<xs:annotation>
+			<xs:documentation>Структура банківського рахунку</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="IBANNumber" type="SAFmiddle1textType">
+				<xs:annotation>
+					<xs:documentation>Номер IBAN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:sequence>
+				<xs:element name="BankAccountNumber" type="SAFmiddle1textType">
+					<xs:annotation>
+						<xs:documentation>Номер рахунку в банку</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="BankAccountName" type="SAFmiddle2textType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Назва банківського рахунку</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="SortCode" type="SAFshorttextType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Номер відділення банку</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>	
+		</xs:choice>  
+	</xs:complexType>
+	
+	<xs:complexType name="TaxIDStructure">
+		<xs:annotation>
+			<xs:documentation>Структура реєстраційних даних платника податків</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TaxRegistrationNumber" type="SAFmiddle1textType">
+				<xs:annotation>
+					<xs:documentation>Податковий номер</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element ref="TaxType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Вид податку</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="TaxNumber" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Індивідуальний податковий номер</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="TaxAuthority" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Податковий орган</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="TaxVerificationDate" type="SAFdateType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата перевірки реєстраційних даних</xs:documentation>
+				</xs:annotation>	
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="PersonNameStructure"> 
+		<xs:annotation>
+			<xs:documentation>Структура імені фізичної особи</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Title" type="SAFlongtextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Посада особи</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="FirstName" type="SAFmiddle1textType">
+				<xs:annotation>
+					<xs:documentation>Ім’я</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="Initials" type="SAFshorttextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ініціали</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="LastNamePrefix" type="SAFshorttextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Префікс прізвища</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="LastName" type="SAFmiddle2textType">
+				<xs:annotation>
+					<xs:documentation>Прізвище</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="BirthName" type="SAFmiddle2textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ім'я при народженні</xs:documentation>
+				</xs:annotation>	
+			</xs:element>
+			<xs:element name="Salutation" type="SAFshorttextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Звертання</xs:documentation>
+				</xs:annotation>	
+			</xs:element>		
+			<xs:element name="OtherTitles" type="SAFlongtextType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Наказ про призначення/звільнення з посади</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="AddressStructure"> 
+		<xs:annotation>
+			<xs:documentation>Структура адреси</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StreetName" type="SAFmiddle2textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Назва вулиці</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="Number" type="SAFshorttextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер будинку</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="AdditionalAddressDetail" type="SAFmiddle2textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Додаткова інформація (номер офісу\квартири)</xs:documentation>
+				</xs:annotation>
+			</xs:element>		
+			<xs:element name="Building" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер корпусу</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="City" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Населений пункт</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="PostalCode" type="SAFshorttextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Поштовий індекс</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="Region" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Область</xs:documentation>
+				</xs:annotation>
+			</xs:element>				
+			<xs:element ref="Country">
+				<xs:annotation>
+					<xs:documentation>Країна</xs:documentation>
+				</xs:annotation>
+			</xs:element>				
+			<xs:element name="AddressType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Тип адреси</xs:documentation>
+				</xs:annotation>	
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="StreetAddress"/>
+						<xs:enumeration value="PostalAddress"/>		
+						<xs:enumeration value="BillingAddress"/>
+						<xs:enumeration value="ShipToAddress"/>	
+						<xs:enumeration value="ShipFromAddress"/>
+					</xs:restriction>
+				</xs:simpleType>	 		
+			</xs:element>	
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="CompanyStructure">
+		<xs:annotation>
+			<xs:documentation>Дані контрагента</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>
+			<xs:element ref="RegistrationNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код контрагента</xs:documentation>
+				</xs:annotation>
+			</xs:element>				
+			<xs:element ref="Name">
+				<xs:annotation>
+					<xs:documentation>Найменування контрагента</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+			<xs:element ref="Address" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Місцезнаходження</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="Contact" type="ContactInformationStructure" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Посадові (уповноважені) особи контрагента</xs:documentation>
+				</xs:annotation>  
+			</xs:element>	
+			<xs:element ref="TaxRegistration" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Реєстраційні дані платника податків</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+			<xs:element ref="BankAccount" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Банківський рахунок</xs:documentation>
+				</xs:annotation>
+			</xs:element>							
+		</xs:sequence>
+	</xs:complexType>  
+	
+	<xs:complexType name="AmountStructure">  
+		<xs:annotation>
+			<xs:documentation>Структура суми</xs:documentation>
+		</xs:annotation>	
+		<xs:sequence>	
+			<xs:element name="Amount" type="SAFmonetaryType" nillable="true">
+				<xs:annotation>
+					<xs:documentation>Сума</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:sequence minOccurs="0">
+				<xs:element ref="CurrencyCode">
+					<xs:annotation>
+						<xs:documentation>Код валюти</xs:documentation>
+					</xs:annotation>
+				</xs:element>					
+				<xs:element name="CurrencyAmount" type="SAFmonetaryType" nillable="true">
+					<xs:annotation>
+						<xs:documentation>Сума валюти</xs:documentation>
+					</xs:annotation>
+				</xs:element>					
+				<xs:element name="ExchangeRate" type="SAFexchangerateType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Курс обміну валют</xs:documentation>
+					</xs:annotation>
+				</xs:element>					
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="TaxInformationStructure"> 
+		<xs:annotation>
+			<xs:documentation>Структура інформації про податок</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="TaxType">
+				<xs:annotation>
+					<xs:documentation>Вид податку</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element ref="TaxCode">
+				<xs:annotation>
+					<xs:documentation>Код податку</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element ref="TaxPercentage" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Відносна ставка податку</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="TaxBase" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>База оподаткування</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="TaxBaseDescription" type="SAFmiddle2textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Одиниця виміру бази оподаткування</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="TaxAmount" type="AmountStructure">
+				<xs:annotation>
+					<xs:documentation>Сума податку</xs:documentation>
+				</xs:annotation>
+			</xs:element>	
+			<xs:element name="TaxExemptionReason" type="SAFmiddle2textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Податкова пільга</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+			<xs:element name="TaxDeclarationPeriod" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Податковий період</xs:documentation>
+				</xs:annotation>	
+			</xs:element>	
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ShippingPointStructure"> 
+		<xs:annotation>
+			<xs:documentation>Структура пункту перевезення</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DeliveryID" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер поставки</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+			<xs:element ref="DeliveryDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата поставки</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+			<xs:element ref="WarehouseID" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код складу</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+			<xs:element ref="LocationID" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ідентифікатор місцезнаходження</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+			<xs:element name="UCR" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>UCR</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+			<xs:element ref="Address" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Місцезнаходження</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ContactInformationStructure">
+		<xs:annotation>
+			<xs:documentation>Структура контактної інформації</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="ContactPerson">
+				<xs:annotation>
+					<xs:documentation>Посадова (уповноважена) особа</xs:documentation>
+				</xs:annotation>
+			</xs:element>							  			    
+			<xs:element ref="Telephone" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Телефон</xs:documentation>
+				</xs:annotation>
+			</xs:element>		
+			<xs:element name="Fax" type="SAFshorttextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Факс</xs:documentation>
+				</xs:annotation>
+			</xs:element>							
+			<xs:element ref="Email" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>E-mail</xs:documentation>
+				</xs:annotation>
+			</xs:element>								
+			<xs:element name="Website" type="xs:anyURI" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Веб-сайт</xs:documentation>
+				</xs:annotation>
+			</xs:element>							
+		</xs:sequence> 
+	</xs:complexType>
+	
+	<xs:complexType name="AnalysisStructure"> 
+		<xs:annotation>
+			<xs:documentation>Структура аналітики</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="AnalysisType">
+				<xs:annotation>
+					<xs:documentation>Код типу аналітичного рахунку (субконто)</xs:documentation>
+				</xs:annotation>
+			</xs:element>							
+			<xs:element ref="AnalysisID">
+				<xs:annotation>
+					<xs:documentation>Код аналітичного рахунку (субконто)</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+			<xs:element name="AnalysisAmount" type="AmountStructure" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сума по аналітичному рахунку (субконто)</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="InvoiceStructure">
+		<xs:annotation>
+			<xs:documentation>Структура рахунку-фактури</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="InvoiceNo">
+				<xs:annotation>
+					<xs:documentation>Код документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="CustomerInfo">
+					<xs:annotation>
+						<xs:documentation>Інформація про покупця</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="CustomerID">
+								<xs:annotation>
+									<xs:documentation>Ідентифікатор покупця</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="Name">
+								<xs:annotation>
+									<xs:documentation>Найменування покупця</xs:documentation>
+								</xs:annotation>	
+							</xs:element>
+							<xs:element ref="BillingAddress" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Місцезнаходження</xs:documentation>
+								</xs:annotation>	
+							</xs:element>
+						</xs:sequence>	
+					</xs:complexType>
+				</xs:element>	
+				<xs:element name="SupplierInfo">
+					<xs:annotation>
+						<xs:documentation>Інформація про постачальника</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="SupplierID">
+								<xs:annotation>
+									<xs:documentation>Ідентифікатор постачальника</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="Name">
+								<xs:annotation>
+									<xs:documentation>Найменування постачальника</xs:documentation>
+								</xs:annotation>	
+							</xs:element>
+							<xs:element ref="BillingAddress" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Місцезнаходження</xs:documentation>
+								</xs:annotation>	
+							</xs:element>
+						</xs:sequence>	
+					</xs:complexType>
+				</xs:element>	
+			</xs:choice>	
+			<xs:element ref="AccountID">
+				<xs:annotation>
+					<xs:documentation>Код рахунку</xs:documentation>
+				</xs:annotation>
+			</xs:element>			
+			<xs:element name="BranchStoreNumber" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер філії</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="Period" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Обліковий період</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="PeriodYear" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Звітний рік</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="InvoiceDate">
+				<xs:annotation>
+					<xs:documentation>Дата</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="InvoiceType">
+				<xs:annotation>
+					<xs:documentation>Вид документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="TransactionType">
+				<xs:annotation>
+					<xs:documentation>Тип операції</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="ShipTo" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Пункт розвантаження</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="ShipFrom" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Пункт навантаження</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PaymentTerms" type="SAFmiddle2textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Умови оплати</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="SelfBillingIndicator" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Індикатор самостійної виписки рахунків</xs:documentation>
+				</xs:annotation>				
+			</xs:element>
+			<xs:element ref="SourceID" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Джерело</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="GLPostingDate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата облікового запису</xs:documentation>
+				</xs:annotation>
+			</xs:element>				
+			<xs:element ref="BatchID" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код партії</xs:documentation>
+				</xs:annotation>
+			</xs:element>				
+			<xs:element name="SystemID" type="SAFmiddle1textType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Системний номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>																																																										
+			<xs:element ref="TransactionID">
+				<xs:annotation>
+					<xs:documentation>Код операції</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReceiptNumbers" type="SAFlongtextType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номери документів про оприбуткування</xs:documentation>
+				</xs:annotation>
+			</xs:element>					
+			<xs:element name="Line" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Рядок</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="LineNumber" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Номер рядка</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element ref="AccountID">
+							<xs:annotation>
+								<xs:documentation>Код рахунку</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element ref="CorrespondingAccountID">
+							<xs:annotation>
+								<xs:documentation>Код кореспондуючого рахунку</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element ref="Analysis" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Дані в розрізі аналітики</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element ref="OrderReferences" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Посилання на замовлення</xs:documentation>
+							</xs:annotation>							
+						</xs:element>																
+						<xs:element ref="ShipTo" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Пункт розвантаження</xs:documentation>
+							</xs:annotation>
+						</xs:element>		
+						<xs:element ref="ShipFrom" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Пункт навантаження</xs:documentation>
+							</xs:annotation>
+						</xs:element>		
+						<xs:element ref="GoodsServicesID" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Ідентифікатор категорії запасу/продукції (товару/роботи, послуги)</xs:documentation>
+							</xs:annotation>
+						</xs:element>		
+						<xs:element ref="ProductCode" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Код запасу/продукції (товару/роботи, послуги)</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element name="ProductDescription" type="SAFlongtextType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Опис запасу/продукції (товару/роботи, послуги)</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element ref="AssetID" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Код активу</xs:documentation>															
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Delivery" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Поставка</xs:documentation>															
+							</xs:annotation>
+							<xs:complexType>
+								<xs:choice>
+									<xs:element ref="MovementReference" maxOccurs="unbounded">
+										<xs:annotation>
+											<xs:documentation>Посилання на рух запасів</xs:documentation>															
+										</xs:annotation>
+									</xs:element>  
+									<xs:element ref="DeliveryDate">
+										<xs:annotation>
+											<xs:documentation>Дата поставки</xs:documentation>															
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="DeliveryPeriod">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="FromDate" type="SAFdateType">
+													<xs:annotation>
+														<xs:documentation>Дата початку</xs:documentation>															
+													</xs:annotation>
+												</xs:element>  
+												<xs:element name="ToDate" type="SAFdateType">
+													<xs:annotation>
+														<xs:documentation>Дата завершення</xs:documentation>															
+													</xs:annotation>
+												</xs:element>  
+											</xs:sequence>	
+										</xs:complexType>
+									</xs:element>	
+								</xs:choice>
+							</xs:complexType>	
+						</xs:element>
+						<xs:element ref="Quantity" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Кількість</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element name="InvoiceUOM" type="SAFcodeType" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Одиниця виміру</xs:documentation>															
+							</xs:annotation>
+						</xs:element> 
+						<xs:element ref="UOMtoUOMBaseConversionFactor" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Коефіцієнт перерахунку одиниці виміру в базову</xs:documentation>															
+							</xs:annotation>
+						</xs:element> 
+						<xs:element ref="UnitPrice">
+							<xs:annotation>
+								<xs:documentation>Ціна</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element ref="TaxPointDate" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Дата оподаткування</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element name="References" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Посилання</xs:documentation>															
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="CreditNote" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Кредит-нота</xs:documentation>															
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Reference" type="SAFmiddle1textType" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Посилання на основний документ</xs:documentation>															
+													</xs:annotation>
+												</xs:element>  
+												<xs:element name="Reason" type="SAFlongtextType" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Причина коригування</xs:documentation>															
+													</xs:annotation>
+												</xs:element>  
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>	
+								</xs:sequence>	
+							</xs:complexType>
+						</xs:element>
+						<xs:element ref="Description">
+							<xs:annotation>
+								<xs:documentation>Опис</xs:documentation>															
+							</xs:annotation>
+						</xs:element>    
+						<xs:element name="InvoiceLineAmount" type="AmountStructure">
+							<xs:annotation>
+								<xs:documentation>Сума за рядком первинного документа</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element ref="DebitCreditIndicator" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Дебетова/кредитова ознака</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element name="ShippingCostsAmount" type="AmountStructure" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Сума витрат на доставку</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+						<xs:element ref="TaxInformation" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Податкова інформація</xs:documentation>															
+							</xs:annotation>
+						</xs:element>  
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="Settlement" minOccurs="0"> 
+				<xs:annotation>
+					<xs:documentation>Знижка</xs:documentation>
+				</xs:annotation>				
+			</xs:element>
+			<xs:element name="DocumentTotals">
+				<xs:annotation>
+					<xs:documentation>Підсумки документа</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="TaxInformationTotals" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Сума податків</xs:documentation>
+							</xs:annotation>
+						</xs:element>																	
+						<xs:element name="ShippingCostsAmountTotal" type="SAFmonetaryType" nillable="true" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Сума витрат на доставку</xs:documentation>
+							</xs:annotation>
+						</xs:element>		
+						<xs:element ref="NetTotal">
+							<xs:annotation>
+								<xs:documentation>Сума без податків та витрат на доставку</xs:documentation>
+							</xs:annotation>
+						</xs:element>		
+						<xs:element ref="GrossTotal">
+							<xs:annotation>
+								<xs:documentation>Загальна сума</xs:documentation>
+							</xs:annotation>
+						</xs:element>		     
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>	
+		</xs:sequence>	
+	</xs:complexType>
+	
+	<xs:complexType name="CounterAgentBalanceStructure">
+		<xs:annotation>
+			<xs:documentation>Структура балансу контрагента</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>															
+			<xs:element ref="SelfBillingIndicator" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Індикатор самостійної виписки рахунків</xs:documentation>
+				</xs:annotation>					
+			</xs:element>
+			<xs:element ref="AccountID">
+				<xs:annotation>
+					<xs:documentation>Код рахунку</xs:documentation>
+				</xs:annotation>
+			</xs:element>																	
+			<xs:choice minOccurs="0" maxOccurs="2">
+				<xs:element ref="OpeningDebitBalance">
+					<xs:annotation>
+						<xs:documentation>Початкове дебетове сальдо</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="OpeningCreditBalance">
+					<xs:annotation>
+						<xs:documentation>Початкове кредитове сальдо</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element ref="DebitTurnover" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дебетовий оборот</xs:documentation>
+				</xs:annotation>		
+			</xs:element>
+			<xs:element ref="CreditTurnover" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Кредитовий оборот</xs:documentation>
+				</xs:annotation>		
+			</xs:element>	
+			<xs:choice minOccurs="0" maxOccurs="2">
+				<xs:element ref="ClosingDebitBalance">
+					<xs:annotation>
+						<xs:documentation>Кінцеве дебетове сальдо</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="ClosingCreditBalance">
+					<xs:annotation>
+						<xs:documentation>Кінцеве кредитове сальдо</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>	
+			<xs:element ref="OpenInvoices" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Дані первинних документів, за якими наявна заборгованість</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>	
+
+	<xs:element name="OpenInvoices">
+		<xs:annotation>
+			<xs:documentation>Дані первинних документів, за якими наявна заборгованість</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="InvoiceType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Вид документа</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="InvoiceNo" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Код документа</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="InvoiceDate" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Дата документа</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="GLPostingDate" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Дата облікового запису</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="OrderReferences" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Джерело</xs:documentation>
+					</xs:annotation>							
+				</xs:element>	
+				<xs:choice minOccurs="0">
+					<xs:element name="OpeningDebitAmount" type="AmountStructure">
+						<xs:annotation>
+							<xs:documentation>Початкове дебетове сальдо</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OpeningCreditAmount" type="AmountStructure">
+						<xs:annotation>
+							<xs:documentation>Початкове кредитове сальдо</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:choice>	
+				<xs:element name="OpeningBalanceOriginDate" type="SAFdateType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Дата виникнення заборгованості</xs:documentation>
+					</xs:annotation>
+				</xs:element>	
+				<xs:choice minOccurs="0">	
+					<xs:element name="ClosingDebitAmount" type="AmountStructure">
+						<xs:annotation>
+							<xs:documentation>Кінцеве дебетове сальдо</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClosingCreditAmount" type="AmountStructure">
+						<xs:annotation>
+							<xs:documentation>Кінцеве кредитове сальдо</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:choice>	
+				<xs:element name="ClosingBalanceOriginDate" type="SAFdateType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Дата виникнення заборгованості</xs:documentation>
+					</xs:annotation>
+				</xs:element>				
+			</xs:sequence>			
+		</xs:complexType>	
+	</xs:element>
+	
+	<xs:element name="OrderReferences">		
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OriginatingON" type="SAFmiddle2textType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Номер замовлення</xs:documentation>
+					</xs:annotation>
+				</xs:element>		
+				<xs:element name="OrderDate" type="SAFdateType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Дата замовлення</xs:documentation>
+					</xs:annotation>
+				</xs:element>		
+			</xs:sequence>	
+		</xs:complexType>
+	</xs:element>	
+
+	<xs:element name="Settlement"> 
+		<xs:annotation>
+			<xs:documentation>Знижка</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SettlementDiscount" type="SAFmiddle1textType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Знижка за дострокову оплату</xs:documentation>
+					</xs:annotation>
+				</xs:element>		
+				<xs:element name="SettlementAmount" type="AmountStructure">
+					<xs:annotation>
+						<xs:documentation>Сума розрахунку</xs:documentation>
+					</xs:annotation>
+				</xs:element>		
+				<xs:element ref="SettlementDate" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Дата розрахунку</xs:documentation>
+					</xs:annotation>
+				</xs:element>		
+				<xs:element name="PaymentMechanism" type="SAFcodeType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Механізм оплати</xs:documentation>
+					</xs:annotation>
+				</xs:element>		
+			</xs:sequence>	
+		</xs:complexType>
+	</xs:element>	
+
+	<xs:element name="RegistrationNumber" type="SAFmiddle1textType"/> 
+	<xs:element name="Name" type="SAFmiddle2textType"/> 
+	<xs:element name="Telephone" type="SAFshorttextType"/> 
+    <xs:element name="Email" type="SAFmiddle2textType"/>      
+    <xs:element name="AccountID" type="SAFmiddle2textType"/>    	
+    <xs:element name="OpeningDebitBalance" type="SAFmonetaryType" nillable="true"/> 
+    <xs:element name="OpeningCreditBalance" type="SAFmonetaryType" nillable="true"/> 
+	<xs:element name="DebitTurnover" type="SAFmonetaryType" nillable="true"/> 
+    <xs:element name="CreditTurnover" type="SAFmonetaryType" nillable="true"/> 
+    <xs:element name="ClosingDebitBalance" type="SAFmonetaryType" nillable="true"/>   
+    <xs:element name="ClosingCreditBalance" type="SAFmonetaryType" nillable="true"/>
+    <xs:element name="TaxType" type="SAFcodeType"/>
+    <xs:element name="TaxCode" type="SAFcodeType"/> 
+    <xs:element name="ProductCode" type="SAFmiddle2textType"/>
+    <xs:element name="GoodsServicesID"> 
+		<xs:simpleType>
+			<xs:restriction base="SAFcodeType">
+				<xs:enumeration value="1"/>
+				<xs:enumeration value="2"/>																			
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>	 	
+    <xs:element name="Description" type="SAFlongtextType"/> 
+    <xs:element name="WarehouseID" type="SAFmiddle1textType"/> 
+    <xs:element name="LocationID" type="SAFshorttextType"/> 
+    <xs:element name="StockAccountNo" type="SAFmiddle2textType"/> 
+	<xs:element name="AssetID" type="SAFmiddle1textType"/> 
+	<xs:element name="Quantity" type="SAFquantityType" nillable="true"/> 
+	<xs:element name="DebitCreditIndicator">
+		<xs:simpleType>
+			<xs:restriction base="SAFcodeType">
+				<xs:enumeration value="D"/>
+				<xs:enumeration value="C"/>																			
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>	 	
+	<xs:element name="TaxPointDate" type="SAFdateType"/> 
+    <xs:element name="OwnerID" type="SAFmiddle1textType"/> 
+	<xs:element name="OwnerID1" type="SAFmiddle1textType"/> 
+    <xs:element name="SupplierID" type="SAFmiddle1textType"/> 
+	<xs:element name="SupplierID1" type="SAFmiddle1textType"/>	
+    <xs:element name="TaxPercentage" type="xs:decimal" nillable="true"/> 
+    <xs:element name="UnitOfMeasure" type="SAFcodeType"/>  
+    <xs:element name="SourceID" type="SAFmiddle1textType"/> 
+    <xs:element name="TransactionDate" type="SAFdateType"/> 
+    <xs:element name="TransactionID" type="SAFmiddle2textType"/>    
+    <xs:element name="Period"> 
+		<xs:simpleType>
+			<xs:restriction base="xs:nonNegativeInteger">
+				<xs:minInclusive value="1"/>
+				<xs:maxInclusive value="12"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>	
+    <xs:element name="PeriodYear"> 
+		<xs:simpleType>
+			<xs:restriction base="xs:nonNegativeInteger">
+				<xs:minInclusive value="1970"/>
+				<xs:maxInclusive value="2100"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>	
+    <xs:element name="NumberOfEntries" type="xs:nonNegativeInteger"/> 
+    <xs:element name="TotalDebit" type="SAFmonetaryType" nillable="true"/> 
+  	<xs:element name="TotalCredit" type="SAFmonetaryType" nillable="true"/> 
+  	<xs:element name="BatchID" type="SAFmiddle1textType"/> 
+  	<xs:element name="GLPostingDate" type="SAFdateType"/> 
+  	<xs:element name="CustomerID" type="SAFmiddle1textType"/>
+	<xs:element name="CustomerID1" type="SAFmiddle1textType"/>	
+	<xs:element name="DeliveryDate" type="SAFdateType"/> 	
+	<xs:element name="SourceDocumentID" type="SAFmiddle1textType"/>
+	<xs:element name="LineNumber" type="SAFshorttextType"/> 
+	<xs:element name="MovementReference" type="SAFmiddle1textType"/> 
+	<xs:element name="MovementType" type="SAFcodeType"/> 
+	<xs:element name="AssetValuationType"> 
+		<xs:simpleType>
+			<xs:restriction base="SAFshorttextType">
+				<xs:enumeration value="1"/>
+				<xs:enumeration value="2"/>																			
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>	
+	<xs:element name="UnitPrice" type="SAFquantityType" nillable="true"/> 
+	<xs:element name="Country" type="ISOCountryCode"/> 
+	<xs:element name="UOMBase" type="SAFcodeType"/>
+	<xs:element name="SupplierName" type="SAFmiddle2textType"/>
+	<xs:element name="ShipTo" type="ShippingPointStructure"/>
+	<xs:element name="ShipFrom" type="ShippingPointStructure"/>
+	<xs:element name="TransactionType" type="SAFshorttextType"/>
+	<xs:element name="CorrespondingAccountID" type="SAFmiddle2textType"/>
+	<xs:element name="Analysis" type="AnalysisStructure"/>
+	<xs:element name="Invoice" type="InvoiceStructure"/>
+	<xs:element name="DocumentDescription" type="SAFlongtextType"/>  
+	<xs:element name="TaxInformation" type="TaxInformationStructure"/>
+	<xs:element name="TaxInformationTotals" type="TaxInformationStructure"/>
+	<xs:element name="NetTotal" type="SAFmonetaryType" nillable="true"/>		
+	<xs:element name="DocumentNumber" type="SAFmiddle1textType"/>
+	<xs:element name="TransactionDescription" type="SAFlongtextType"/> 
+	<xs:element name="Address" type="AddressStructure"/>	
+	<xs:element name="TaxRegistration" type="TaxIDStructure"/>
+	<xs:element name="BankAccount" type="BankAccountStructure"/>
+	<xs:element name="ContactPerson" type="PersonNameStructure"/>  
+	<xs:element name="BillingAddress" type="AddressStructure"/>	
+	<xs:element name="AnalysisType" type="SAFcodeType"/>
+	<xs:element name="InvoiceType" type="SAFcodeType"/>
+	<xs:element name="InvoiceNo" type="SAFmiddle2textType"/>
+	<xs:element name="InvoiceDate" type="SAFdateType"/>
+	<xs:element name="RelatedPartyCode" type="SAFcodeType"/>
+	<xs:element name="CurrencyCode" type="ISOCurrencyCode"/>
+	<xs:element name="Amount" type="AmountStructure"/>
+	<xs:element name="PostalAddress" type="AddressStructure"/>
+	<xs:element name="AnalysisID" type="SAFmiddle1textType"/>
+	<xs:element name="SettlementDate" type="SAFdateType"/>
+	<xs:element name="DocumentDate" type="SAFdateType"/> 
+	<xs:element name="SelfBillingIndicator" type="SAFcodeType"/>
+	<xs:element name="UOMtoUOMBaseConversionFactor" type="xs:decimal"/>
+	<xs:element name="GrossTotal" type="SAFmonetaryType" nillable="true"/>
+	<!--  -->
+
+	<xs:simpleType name="ISOCountryCode">
+		<xs:restriction base="xs:string">
+			<xs:length value="2"/>
+			<xs:pattern value="[^/\-]*(((/|(\-/))([^/*\-][^/\-]*)?)|(\-[^/\-]([^/\-]*)?))*\-?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ISOCurrencyCode">
+		<xs:restriction base="xs:string">
+			<xs:length value="3"/>
+			<xs:pattern value="[^/\-]*(((/|(\-/))([^/*\-][^/\-]*)?)|(\-[^/\-]([^/\-]*)?))*\-?"/>
+		</xs:restriction>
+	</xs:simpleType>	
+	<xs:simpleType name="SAFcodeType"> 
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="9"/>
+			<xs:pattern value="[^/\-]*(((/|(\-/))([^/*\-][^/\-]*)?)|(\-[^/\-]([^/\-]*)?))*\-?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SAFexchangerateType">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="18"/>
+			<xs:fractionDigits value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SAFlongtextType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="256"/>
+			<xs:pattern value="[^/\-]*(((/|(\-/))([^/*\-][^/\-]*)?)|(\-[^/\-]([^/\-]*)?))*\-?"/>
+		</xs:restriction>
+	</xs:simpleType>	
+	<xs:simpleType name="SAFmiddle1textType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="35"/>
+			<xs:pattern value="[^/\-]*(((/|(\-/))([^/*\-][^/\-]*)?)|(\-[^/\-]([^/\-]*)?))*\-?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SAFmiddle2textType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="70"/>
+			<xs:pattern value="[^/\-]*(((/|(\-/))([^/*\-][^/\-]*)?)|(\-[^/\-]([^/\-]*)?))*\-?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SAFmonetaryType">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="18"/>
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>	
+	<xs:simpleType name="SAFquantityType">
+		<xs:restriction base="xs:decimal">
+			<xs:totalDigits value="22"/>
+			<xs:fractionDigits value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SAFshorttextType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="18"/>
+			<xs:pattern value="[^/\-]*(((/|(\-/))([^/*\-][^/\-]*)?)|(\-[^/\-]([^/\-]*)?))*\-?"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SAFdateType"> <!-- DD.MM.YYYY -->
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.20\d\d"/>
+		</xs:restriction>
+	</xs:simpleType> 
+	<xs:simpleType name="SAFpercentageType">
+		<xs:restriction base="xs:decimal">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SAFstringType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^/\-]*(((/|(\-/))([^/*\-][^/\-]*)?)|(\-[^/\-]([^/\-]*)?))*\-?"/>
+		</xs:restriction>
+	</xs:simpleType>	
+</xs:schema>	
